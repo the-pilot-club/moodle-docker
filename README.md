@@ -1,11 +1,21 @@
 # Moodle Docker image
 
-This is a somewhat opinionated Docker image for running Moodle, currently used by VATSIM.
+This is a somewhat opinionated Docker image for running Moodle, currently used by The Pilot Club.
 It is based on the official PHP+Apache image and includes the following:
 
 * Moodle and its required PHP extensions
-* [atto_morefontcolors](https://moodle.org/plugins/atto_morefontcolors) plugin
+* [auth_enrolkey](https://moodle.org/plugins/auth_enrolkey) plugin
+* [availability_coursecompleted](https://moodle.org/plugins/availability_coursecompleted) plugin
+* [enrol_apply](https://moodle.org/plugins/enrol_apply) plugin
+* [format_flexsections](https://moodle.org/plugins/format_flexsections) plugin
+* [mod_booking](https://moodle.org/plugins/mod_booking) plugin
+* [mod_coursecertificate](https://moodle.org/plugins/mod_coursecertificate) plugin
 * [mod_customcert](https://moodle.org/plugins/mod_customcert) plugin
+* [mod_hvp](https://moodle.org/plugins/mod_hvp) plugin
+* [mod_pulse](https://moodle.org/plugins/mod_pulse) plugin
+* [mod_scheduler](https://moodle.org/plugins/mod_scheduler) plugin
+* [theme_moove](https://moodle.org/plugins/theme_moove) theme
+* [tool_certificate](https://moodle.org/plugins/tool_certificate) plugin
 * [tool_forcedcache](https://moodle.org/plugins/tool_forcedcache) plugin
 
 ## Usage

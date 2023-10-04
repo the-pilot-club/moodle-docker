@@ -1,8 +1,18 @@
 FROM php:8.2-apache-bullseye
 
 ARG MOODLE_LMS_TAG=v4.2.2
-ARG MOODLE_ATTO_MOREFONTCOLORS_TAG=2021062100
+ARG MOODLE_AUTH_ENROLKEY_COMMIT=5648363
+ARG MOODLE_AVAILABILITY_COURSECOMPLETED_TAG=v3.9.6
+ARG MOODLE_ENROL_APPLY_TAG=v.3.9-b
+ARG MOODLE_FORMAT_FLEXSESSIONS_TAG=v4.0.4
+ARG MOODLE_MOD_BOOKING_TAG=v7.8.7.02
+ARG MOODLE_MOD_COURSECERTIFICATE_TAG=v4.2
 ARG MOODLE_MOD_CUSTOMCERT_TAG=v4.2.2
+ARG MOODLE_MOD_HVP_TAG=moodle-release-1.23.2
+ARG MOODLE_MOD_PULSE_TAG=v1.2
+ARG MOODLE_MOD_SCHEDULER_TAG=v4.0.0
+ARG MOODLE_THEME_MOOVE_COMMIT=8c96934
+ARG MOODLE_TOOL_CERTIFICATE_TAG=v4.2
 ARG MOODLE_TOOL_FORCEDCACHE_COMMIT=7f7e90b
 
 # Install PHP extensions
@@ -20,10 +30,30 @@ RUN set -ex \
 # Install Moodle
 RUN set -ex \
     && curl -L https://github.com/moodle/moodle/archive/refs/tags/${MOODLE_LMS_TAG}.tar.gz | tar -C /var/www/html --strip-components=1 -xz \
-    && mkdir -p /var/www/html/lib/editor/atto/plugins/morefontcolors \
-    && curl -L https://github.com/ndunand/moodle-atto_morefontcolors/archive/refs/tags/${MOODLE_ATTO_MOREFONTCOLORS_TAG}.tar.gz | tar -C /var/www/html/lib/editor/atto/plugins/morefontcolors --strip-components=1 -xz \
+    && mkdir -p /var/www/html/auth/enrolkey \
+    && curl -L https://github.com/catalyst/moodle-auth_enrolkey/archive/${MOODLE_AUTH_ENROLKEY_COMMIT}.tar.gz | tar -C /var/www/html/auth/enrolkey --strip-components=1 -xz \
+    && mkdir -p /var/www/html/availability/condition/coursecompleted \
+    && curl -L https://github.com/ewallah/moodle-availability_coursecompleted/archive/refs/tags/${MOODLE_AVAILABILITY_COURSECOMPLETED_TAG}.tar.gz | tar -C /var/www/html/availability/condition/coursecompleted --strip-components=1 -xz \
+    && mkdir -p /var/www/html/enrol/apply \
+    && curl -L https://github.com/emeneo/moodle-enrol_apply/archive/refs/tags/${MOODLE_ENROL_APPLY_TAG}.tar.gz | tar -C /var/www/html/enrol/apply --strip-components=1 -xz \
+    && mkdir -p /var/www/html/course/format/flexsessions \
+    && curl -L https://github.com/marinaglancy/moodle-format_flexsections/archive/refs/tags/${MOODLE_FORMAT_FLEXSESSIONS_TAG}.tar.gz | tar -C /var/www/html/course/format/flexsessions --strip-components=1 -xz \
+    && mkdir -p /var/www/html/mod/booking \
+    && curl -L https://github.com/Wunderbyte-GmbH/moodle-mod_booking/archive/refs/tags/${MOODLE_MOD_BOOKING_TAG}.tar.gz | tar -C /var/www/html/mod/booking --strip-components=1 -xz \
+    && mkdir -p /var/www/html/mod/coursecertificate \
+    && curl -L https://github.com/moodleworkplace/moodle-mod_coursecertificate/archive/refs/tags/${MOODLE_MOD_COURSECERTIFICATE_TAG}.tar.gz | tar -C /var/www/html/mod/coursecertificate --strip-components=1 -xz \
     && mkdir -p /var/www/html/mod/customcert \
     && curl -L https://github.com/mdjnelson/moodle-mod_customcert/archive/refs/tags/${MOODLE_MOD_CUSTOMCERT_TAG}.tar.gz | tar -C /var/www/html/mod/customcert --strip-components=1 -xz \
+    && mkdir -p /var/www/html/mod/hvp \
+    && curl -L https://github.com/h5p/moodle-mod_hvp/archive/refs/tags/${MOODLE_MOD_HVP_TAG}.tar.gz | tar -C /var/www/html/mod/hvp --strip-components=1 -xz \
+    && mkdir -p /var/www/html/mod/pulse \
+    && curl -L https://github.com/bdecentgmbh/moodle-mod_pulse/archive/refs/tags/${MOODLE_MOD_PULSE_TAG}.tar.gz | tar -C /var/www/html/mod/pulse --strip-components=1 -xz \
+    && mkdir -p /var/www/html/mod/scheduler \
+    && curl -L https://github.com/bostelm/moodle-mod_scheduler/archive/refs/tags/${MOODLE_MOD_SCHEDULER_TAG}.tar.gz | tar -C /var/www/html/mod/scheduler --strip-components=1 -xz \
+    && mkdir -p /var/www/html/theme/moove \
+    && curl -L https://github.com/willianmano/moodle-theme_moove/archive/${MOODLE_THEME_MOOVE_COMMIT}.tar.gz | tar -C /var/www/html/theme/moove --strip-components=1 -xz \
+    && mkdir -p /var/www/html/admin/tool/certificate \
+    && curl -L https://github.com/moodleworkplace/moodle-tool_certificate/archive/refs/tags/${MOODLE_TOOL_CERTIFICATE_TAG}.tar.gz | tar -C /var/www/html/admin/tool/certificate --strip-components=1 -xz \
     && mkdir -p /var/www/html/admin/tool/forcedcache \
     && curl -L https://github.com/catalyst/moodle-tool_forcedcache/archive/${MOODLE_TOOL_FORCEDCACHE_COMMIT}.tar.gz | tar -C /var/www/html/admin/tool/forcedcache --strip-components=1 -xz \
     && chown -R www-data:www-data /var/www/html
