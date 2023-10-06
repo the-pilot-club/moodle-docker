@@ -24,7 +24,7 @@ RUN set -ex \
     && docker-php-ext-install -j$(nproc) exif gd intl mysqli opcache soap xsl zip \
     && pecl install apcu-5.1.22 redis-5.3.7 timezonedb-2023.3 uuid-1.2.0 \
     && docker-php-ext-enable apcu redis timezonedb uuid \
-    && apt-get purge -y --auto-remove git libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev libxml2-dev libxslt-dev uuid-dev \
+    && apt-get purge -y --auto-remove libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev libxml2-dev libxslt-dev uuid-dev \
     && rm -rf /tmp/pear /var/lib/apt/lists/*
 
 # Install Moodle
@@ -45,7 +45,8 @@ RUN set -ex \
     && mkdir -p /var/www/html/mod/customcert \
     && curl -L https://github.com/mdjnelson/moodle-mod_customcert/archive/refs/tags/${MOODLE_MOD_CUSTOMCERT_TAG}.tar.gz | tar -C /var/www/html/mod/customcert --strip-components=1 -xz \
     && mkdir -p /var/www/html/mod/hvp \
-    && curl -L https://github.com/h5p/moodle-mod_hvp/archive/refs/tags/${MOODLE_MOD_HVP_TAG}.tar.gz | tar -C /var/www/html/mod/hvp --strip-components=1 -xz \
+    && git clone --depth=1 --branch ${MOODLE_MOD_HVP_TAG} https://github.com/h5p/moodle-mod_hvp.git /var/www/html/mod/hvp \
+    && git -C /var/www/html/mod/hvp submodule update --init \
     && mkdir -p /var/www/html/mod/pulse \
     && curl -L https://github.com/bdecentgmbh/moodle-mod_pulse/archive/refs/tags/${MOODLE_MOD_PULSE_TAG}.tar.gz | tar -C /var/www/html/mod/pulse --strip-components=1 -xz \
     && mkdir -p /var/www/html/mod/scheduler \
