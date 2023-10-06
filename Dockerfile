@@ -8,7 +8,7 @@ ARG MOODLE_FORMAT_FLEXSECTIONS_TAG=v4.0.4
 ARG MOODLE_MOD_BOOKING_TAG=v7.8.7.02
 ARG MOODLE_MOD_COURSECERTIFICATE_TAG=v4.2
 ARG MOODLE_MOD_CUSTOMCERT_TAG=v4.2.2
-ARG MOODLE_MOD_HVP_TAG=moodle-release-1.23.2
+ARG MOODLE_MOD_HVP_COMMIT=5102a4a
 ARG MOODLE_MOD_PULSE_TAG=v1.2
 ARG MOODLE_MOD_SCHEDULER_TAG=v4.0.0
 ARG MOODLE_THEME_MOOVE_COMMIT=8c96934
@@ -45,7 +45,8 @@ RUN set -ex \
     && mkdir -p /var/www/html/mod/customcert \
     && curl -L https://github.com/mdjnelson/moodle-mod_customcert/archive/refs/tags/${MOODLE_MOD_CUSTOMCERT_TAG}.tar.gz | tar -C /var/www/html/mod/customcert --strip-components=1 -xz \
     && mkdir -p /var/www/html/mod/hvp \
-    && git clone --depth=1 --branch ${MOODLE_MOD_HVP_TAG} https://github.com/h5p/moodle-mod_hvp.git /var/www/html/mod/hvp \
+    && git clone https://github.com/h5p/moodle-mod_hvp.git /var/www/html/mod/hvp \
+    && git -C /var/www/html/mod/hvp checkout ${MOODLE_MOD_HVP_COMMIT} \
     && git -C /var/www/html/mod/hvp submodule update --init \
     && mkdir -p /var/www/html/mod/pulse \
     && curl -L https://github.com/bdecentgmbh/moodle-mod_pulse/archive/refs/tags/${MOODLE_MOD_PULSE_TAG}.tar.gz | tar -C /var/www/html/mod/pulse --strip-components=1 -xz \
