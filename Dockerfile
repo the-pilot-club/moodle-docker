@@ -4,7 +4,7 @@ ARG MOODLE_LMS_TAG=v4.2.2
 ARG MOODLE_AUTH_ENROLKEY_COMMIT=5648363
 ARG MOODLE_AVAILABILITY_COURSECOMPLETED_TAG=v3.9.6
 ARG MOODLE_ENROL_APPLY_TAG=v.3.9-b
-ARG MOODLE_FORMAT_FLEXSESSIONS_TAG=v4.0.4
+ARG MOODLE_FORMAT_FLEXSECTIONS_TAG=v4.0.4
 ARG MOODLE_MOD_BOOKING_TAG=v7.8.7.02
 ARG MOODLE_MOD_COURSECERTIFICATE_TAG=v4.2
 ARG MOODLE_MOD_CUSTOMCERT_TAG=v4.2.2
@@ -36,8 +36,8 @@ RUN set -ex \
     && curl -L https://github.com/ewallah/moodle-availability_coursecompleted/archive/refs/tags/${MOODLE_AVAILABILITY_COURSECOMPLETED_TAG}.tar.gz | tar -C /var/www/html/availability/condition/coursecompleted --strip-components=1 -xz \
     && mkdir -p /var/www/html/enrol/apply \
     && curl -L https://github.com/emeneo/moodle-enrol_apply/archive/refs/tags/${MOODLE_ENROL_APPLY_TAG}.tar.gz | tar -C /var/www/html/enrol/apply --strip-components=1 -xz \
-    && mkdir -p /var/www/html/course/format/flexsessions \
-    && curl -L https://github.com/marinaglancy/moodle-format_flexsections/archive/refs/tags/${MOODLE_FORMAT_FLEXSESSIONS_TAG}.tar.gz | tar -C /var/www/html/course/format/flexsessions --strip-components=1 -xz \
+    && mkdir -p /var/www/html/course/format/flexsections \
+    && curl -L https://github.com/marinaglancy/moodle-format_flexsections/archive/refs/tags/${MOODLE_FORMAT_FLEXSECTIONS_TAG}.tar.gz | tar -C /var/www/html/course/format/flexsections --strip-components=1 -xz \
     && mkdir -p /var/www/html/mod/booking \
     && curl -L https://github.com/Wunderbyte-GmbH/moodle-mod_booking/archive/refs/tags/${MOODLE_MOD_BOOKING_TAG}.tar.gz | tar -C /var/www/html/mod/booking --strip-components=1 -xz \
     && mkdir -p /var/www/html/mod/coursecertificate \
