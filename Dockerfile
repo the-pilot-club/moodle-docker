@@ -1,7 +1,7 @@
 FROM php:8.2-apache-bullseye
 
 ARG MOODLE_LMS_TAG=v4.4.1
-ARG MOODLE_AUTH_ENROLKEY_COMMIT=7ab0e5a
+ARG MOODLE_AUTH_ENROLKEY_COMMIT=5648363
 ARG MOODLE_AVAILABILITY_COURSECOMPLETED_TAG=v4.4.1
 ARG MOODLE_ENROL_APPLY_TAG=v.4.1-a
 ARG MOODLE_FORMAT_FLEXSECTIONS_TAG=v4.0.4
@@ -15,6 +15,7 @@ ARG MOODLE_THEME_MOOVE_COMMIT=571b74a
 ARG MOODLE_TOOL_CERTIFICATE_TAG=v4.4.1
 ARG MOODLE_TOOL_FORCEDCACHE_COMMIT=049b0e4
 ARG MOODLE_LOCAL_BOOKING_COMMIT=790315c
+ARG WUNDERBYTE_TABLE_TAG=v2.0.10
 
 # Install PHP extensions
 RUN set -ex \
@@ -43,6 +44,8 @@ RUN set -ex \
     && curl -L https://github.com/marinaglancy/moodle-format_flexsections/archive/refs/tags/${MOODLE_FORMAT_FLEXSECTIONS_TAG}.tar.gz | tar -C /var/www/html/course/format/flexsections --strip-components=1 -xz \
     && mkdir -p /var/www/html/mod/booking \
     && curl -L https://github.com/Wunderbyte-GmbH/moodle-mod_booking/archive/refs/tags/${MOODLE_MOD_BOOKING_TAG}.tar.gz | tar -C /var/www/html/mod/booking --strip-components=1 -xz \
+    && mkdir -p /var/www/html/local/wunderbyte_table \
+    && curl -L https://github.com/Wunderbyte-GmbH/moodle-local_wunderbyte_table/archive/${WUNDERBYTE_TABLE_TAG}.tar.gz | tar -C /var/www/html/local/wunderbyte_table --strip-components=1 -xz \
     && mkdir -p /var/www/html/mod/coursecertificate \
     && curl -L https://github.com/moodleworkplace/moodle-mod_coursecertificate/archive/refs/tags/${MOODLE_MOD_COURSECERTIFICATE_TAG}.tar.gz | tar -C /var/www/html/mod/coursecertificate --strip-components=1 -xz \
     && mkdir -p /var/www/html/mod/customcert \
