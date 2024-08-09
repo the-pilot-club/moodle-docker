@@ -1,19 +1,20 @@
 FROM php:8.2-apache-bullseye
 
-ARG MOODLE_LMS_TAG=v4.3.2
-ARG MOODLE_AUTH_ENROLKEY_COMMIT=5648363
-ARG MOODLE_AVAILABILITY_COURSECOMPLETED_TAG=v3.9.6
-ARG MOODLE_ENROL_APPLY_TAG=v.3.9-b
+ARG MOODLE_LMS_TAG=v4.4.1
+ARG MOODLE_AUTH_ENROLKEY_COMMIT=7ab0e5a
+ARG MOODLE_AVAILABILITY_COURSECOMPLETED_TAG=v4.4.1
+ARG MOODLE_ENROL_APPLY_TAG=v.4.1-a
 ARG MOODLE_FORMAT_FLEXSECTIONS_TAG=v4.0.4
-ARG MOODLE_MOD_BOOKING_TAG=v7.8.7.02
+ARG MOODLE_MOD_BOOKING_TAG=v8.6.3
 ARG MOODLE_MOD_COURSECERTIFICATE_TAG=v4.2
-ARG MOODLE_MOD_CUSTOMCERT_TAG=v4.2.2
-ARG MOODLE_MOD_HVP_COMMIT=5102a4a
-ARG MOODLE_MOD_PULSE_TAG=v1.2
+ARG MOODLE_MOD_CUSTOMCERT_TAG=v4.4.1
+ARG MOODLE_MOD_HVP_COMMIT=b1105da
+ARG MOODLE_MOD_PULSE_TAG=v1.3
 ARG MOODLE_MOD_SCHEDULER_TAG=v4.0.0
-ARG MOODLE_THEME_MOOVE_COMMIT=381cf48
-ARG MOODLE_TOOL_CERTIFICATE_TAG=v4.2
-ARG MOODLE_TOOL_FORCEDCACHE_COMMIT=7f7e90b
+ARG MOODLE_THEME_MOOVE_COMMIT=571b74a
+ARG MOODLE_TOOL_CERTIFICATE_TAG=v4.4.1
+ARG MOODLE_TOOL_FORCEDCACHE_COMMIT=049b0e4
+ARG MOODLE_LOCAL_BOOKING_COMMIT=790315c
 
 # Install PHP extensions
 RUN set -ex \
@@ -30,6 +31,8 @@ RUN set -ex \
 # Install Moodle
 RUN set -ex \
     && curl -L https://github.com/moodle/moodle/archive/refs/tags/${MOODLE_LMS_TAG}.tar.gz | tar -C /var/www/html --strip-components=1 -xz \
+    && mkdir -p /var/www/html/local/booking \
+    && curl -L https://github.com/the-pilot-club/session-booking/archive/${MOODLE_LOCAL_BOOKING_COMMIT}.tar.gz | tar -C /var/www/html/local/booking --strip-components=1 -xz \
     && mkdir -p /var/www/html/auth/enrolkey \
     && curl -L https://github.com/catalyst/moodle-auth_enrolkey/archive/${MOODLE_AUTH_ENROLKEY_COMMIT}.tar.gz | tar -C /var/www/html/auth/enrolkey --strip-components=1 -xz \
     && mkdir -p /var/www/html/availability/condition/coursecompleted \
