@@ -21,7 +21,7 @@ spec:
                       app: web
           containers:
             - name: moodle
-              image: registry.digitalocean.com/tpc-master/moodle:5579e20
+              image: registry.digitalocean.com/tpc-master/moodle:4abb30c
               args: ["php", "admin/cli/cron.php"]
               envFrom:
                 - configMapRef:
