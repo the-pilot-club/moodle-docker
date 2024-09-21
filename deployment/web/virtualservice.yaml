@@ -3,6 +3,8 @@ kind: VirtualService
 metadata:
   name: web-ssl
   namespace: moodle
+  labels:
+    app.kubernetes.io/instance: moodle
 spec:
   virtualHost:
     domains:

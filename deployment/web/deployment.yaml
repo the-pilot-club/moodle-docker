@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: web
   namespace: moodle
+  labels:
+    app.kubernetes.io/instance: moodle
 spec:
   selector:
     matchLabels:
