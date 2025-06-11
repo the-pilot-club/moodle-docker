@@ -60,9 +60,9 @@ RUN set -ex \
     && mkdir -p /var/www/html/mod/scheduler \
     && curl -L https://github.com/bostelm/moodle-mod_scheduler/archive/refs/tags/${MOODLE_MOD_SCHEDULER_TAG}.tar.gz | tar -C /var/www/html/mod/scheduler --strip-components=1 -xz \
     && mkdir -p /var/www/html/theme/moove \
-    && curl -L https://github.com/willianmano/moodle-theme_moove/archive/${MOODLE_THEME_MOOVE_COMMIT}.tar.gz | tar -C /var/www/html/theme/moove --strip-components=1 -xz \p /var/www/html/theme/moove \
-    && mkdir -p /var/www/html/theme/moove-prime \
-    && curl -L https://github.com/the-pilot-club/moode_moove-theme/archive/${MOODLE_THEME_MOOVE_PRIME_COMMIT}.tar.gz | tar -C /var/www/html/theme/moove-prime --strip-components=1 -xz \
+    && curl -L https://github.com/willianmano/moodle-theme_moove/archive/${MOODLE_THEME_MOOVE_COMMIT}.tar.gz | tar -C /var/www/html/theme/moove --strip-components=1 -xz  \
+    && mkdir -p /var/www/html/theme/mooveprime \
+    && curl -L https://github.com/the-pilot-club/moode_moove-theme/archive/${MOODLE_THEME_MOOVE_PRIME_COMMIT}.tar.gz | tar -C /var/www/html/theme/mooveprime --strip-components=1 -xz \
     && mkdir -p /var/www/html/admin/tool/certificate \
     && curl -L https://github.com/moodleworkplace/moodle-tool_certificate/archive/refs/tags/${MOODLE_TOOL_CERTIFICATE_TAG}.tar.gz | tar -C /var/www/html/admin/tool/certificate --strip-components=1 -xz \
     && mkdir -p /var/www/html/admin/tool/forcedcache \
