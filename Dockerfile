@@ -32,6 +32,7 @@ ARG MOODLE_MOD_SCHEDULER_TAG=v4.0.0
 ARG MOODLE_THEME_MOOVE_PRIME_COMMIT=71b4e19
 ARG MOODLE_TOOL_CERTIFICATE_TAG=v5.0.6
 ARG MOODLE_TOOL_FORCEDCACHE_COMMIT=68d0619
+ARG MOODLE_LOCAL_TPC_COMMIT=00dd848
 
 # Install PHP extensions
 RUN set -ex \
@@ -74,6 +75,8 @@ RUN set -ex \
     && curl -L https://github.com/moodleworkplace/moodle-tool_certificate/archive/refs/tags/${MOODLE_TOOL_CERTIFICATE_TAG}.tar.gz | tar -C /var/www/html/public/admin/tool/certificate --strip-components=1 -xz \
     && mkdir -p /var/www/html/public/admin/tool/forcedcache \
     && curl -L https://github.com/catalyst/moodle-tool_forcedcache/archive/${MOODLE_TOOL_FORCEDCACHE_COMMIT}.tar.gz | tar -C /var/www/html/public/admin/tool/forcedcache --strip-components=1 -xz \
+    && mkdir -p /var/www/html/public/local/tpc \
+    && curl -L https://github.com/the-pilot-club/moodle-tpc-local/archive/${MOODLE_LOCAL_TPC_COMMIT}.tar.gz | tar -C /var/www/html/public/local/tpc --strip-components=1 -xz \
     && chown -R www-data:www-data /var/www/html
 
 
