@@ -29,12 +29,12 @@ ARG MOODLE_MOD_CUSTOMCERT_TAG=v5.0.3
 ARG MOODLE_MOD_HVP_COMMIT=ad38335
 ARG MOODLE_MOD_PULSE_TAG=v2.4-r1
 ARG MOODLE_MOD_SCHEDULER_TAG=v4.0.0
-ARG MOODLE_THEME_MOOVE_PRIME_COMMIT=71b4e19
+ARG MOODLE_THEME_MOOVE_PRIME_COMMIT=3996868
 ARG MOODLE_TOOL_CERTIFICATE_TAG=v5.0.6
 ARG MOODLE_TOOL_FORCEDCACHE_COMMIT=68d0619
-ARG MOODLE_LOCAL_TPC_COMMIT=cc051bb
+ARG MOODLE_LOCAL_TPC_COMMIT=eb2c35a
 
-# Install PHP extensions
+# Install PHP extensionsmysql bin/moodle-docker-compose udown
 RUN set -ex \
     && apt-get update \
     && apt-get install --no-install-recommends -y git libfreetype6 libfreetype6-dev libjpeg62-turbo libjpeg62-turbo-dev libpng16-16 libpng-dev libwebp6 libwebp-dev libxml2-dev libxslt1.1 libxslt-dev libzip-dev unzip uuid-dev \
