@@ -33,6 +33,7 @@ $CFG->dboptions = [
 $redisHost = getenv('REDIS_HOST') ?: '127.0.0.1';
 $redisPort = intval(getenv('REDIS_PORT') ?: 6379);
 $redisPassword = getenv('REDIS_PASSWORD') ?: '';
+$redisDatabase = intval(getenv('REDIS_DATABASE') ?: 0);
 
 $CFG->alternative_cache_factory_class = 'tool_forcedcache_cache_factory';
 $CFG->tool_forcedcache_config_array = [
@@ -68,51 +69,72 @@ $CFG->tool_forcedcache_config_array = [
             // so let's stick them on APCu for speeeeeeeed
             [
                 'conditions' => [
-                    'name' => 'core/langmenu',
-                ],
-                'stores' => ['apcu', 'redis'],
-            ],
-            [
-                'conditions' => [
                     'name' => 'core/plugin_functions',
                 ],
-                'stores' => ['apcu', 'redis'],
+                'stores' => ['APCu', 'redis'],
             ],
             [
                 'conditions' => [
                     'name' => 'core/string',
                 ],
-                'stores' => ['apcu', 'redis'],
+                'stores' => ['APCu', 'redis'],
             ],
-            // HTMLPurifier spits out some big files,
-            // so let's store it locally in tmpfs
+            [
+                'conditions' => [
+                    'name' => 'core/langmenu',
+                ],
+                'stores' => ['APCu', 'redis'],
+            ],
+            // This is another special case similar to coursemodinfo below,
+            // this cache has a very large number items so we would put it
+            // into local and shared files, but don't due to MDL-69088.
+            // In practice this doesn't matter as rebuilding these items is
+            // relatively quick, unlike coursemodinfo which is very costly.
             [
                 'conditions' => [
                     'name' => 'core/htmlpurifier',
                 ],
                 'stores' => ['local_file'],
             ],
-            // Other things that work locally can go to tmpfs
+            // Course mod info is a special case because it is so large so we
+            // use files instead of redis for the shared stacked cache.
+            [
+                'conditions' => [
+                    'name' => 'core/coursemodinfo',
+                ],
+                'stores' => ['local_file', 'shared_file'],
+            ],
+            // Everything else which is localizable we have in both a local
+            // cache backed by a shared case to warm up the local caches faster
+            // while auto scaling in new front ends.
             [
                 'conditions' => [
                     'canuselocalstore' => true,
                 ],
                 'stores' => ['local_file', 'redis'],
             ],
-            // Everything else to Redis!
-            ['stores' => ['redis']],
+            // Anything left over which cannot be localized just goes into shared
+            // redis as is.
+            [
+                'stores' => ['redis'],
+            ]
         ],
         'session' => [
             ['stores' => ['redis']],
         ],
         'request' => [],
     ],
+    'definitionoverrides' => [
+        'core/plugin_functions' => [
+            'canuselocalstore' => true,
+        ],
+    ],
 ];
 
 $CFG->session_handler_class = '\core\session\redis';
 $CFG->session_redis_host = $redisHost;
 $CFG->session_redis_port = $redisPort;
-$CFG->session_redis_database = 0;
+$CFG->session_redis_database = $redisDatabase;
 $CFG->session_redis_auth = $redisPassword;
 $CFG->session_redis_prefix = 'mdl_session_';
 
@@ -134,6 +156,7 @@ $CFG->alternative_component_cache = __DIR__ . '/core_component.php';
 $CFG->upgradekey = getenv('UPGRADE_KEY') ?: null;
 $CFG->disableupdateautodeploy = true;
 $CFG->preventexecpath = true;
+$CFG->routerconfigured = true;
 
 /*
  * Pass it off to Moodle core
