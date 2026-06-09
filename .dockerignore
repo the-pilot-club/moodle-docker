@@ -1,0 +1,4 @@
+# Building from the workspace context (context: .), so keep the .git dirs of
+# both checkouts (moodle-docker and the new-theme-src/ theme checkout) out of
+# the build context.
+**/.git
