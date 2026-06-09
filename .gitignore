@@ -1,3 +1,7 @@
 .idea
 config-dev.php
 Dockerfile-dev
+
+# CI checks the private (paid) theme/filter zips out here at build time.
+# Never commit them to this public repo.
+new-theme-src/
