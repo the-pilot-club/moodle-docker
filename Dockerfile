@@ -79,16 +79,21 @@ RUN set -ex \
     && curl -L https://github.com/the-pilot-club/moodle-tpc-local/archive/${MOODLE_LOCAL_TPC_COMMIT}.tar.gz | tar -C /var/www/html/local/tpc --strip-components=1 -xz \
     && chown -R www-data:www-data /var/www/html
 
-# Install the New Learning theme (theme_mb2nl) + mb2 shortcodes filter (filter_mb2shortcodes).
-# The zips come from the private the-pilot-club/moodle-new-theme repo, which CI checks out
-# into ./new-theme-src/ in the build context (see .github/workflows/push.yml). Filenames are
-# version-specific, so match by prefix (case-insensitive) to survive future theme updates.
+# Install the New Learning theme (theme_mb2nl), the mb2 shortcodes filter
+# (filter_mb2shortcodes), and the mb2 local plugins (builder, coursenotes,
+# megamenu, reviews). The zips come from the private the-pilot-club/moodle-new-theme
+# repo, which CI checks out into ./new-theme-src/ in the build context (see
+# .github/workflows/push.yml). Filenames are version-specific, so match by prefix
+# (case-insensitive) to survive future updates. The local_* zips are unzipped one
+# at a time in a loop: passing several archives to a single unzip would make it
+# treat the extras as members of the first archive instead of separate zips.
 COPY new-theme-src/ /tmp/new-theme/
 RUN set -ex \
     && unzip -q /tmp/new-theme/theme_*.[Zz][Ii][Pp]  -d /var/www/html/theme/ \
     && unzip -q /tmp/new-theme/FILTER_*.[Zz][Ii][Pp] -d /var/www/html/filter/ \
+    && for z in /tmp/new-theme/local_*.[Zz][Ii][Pp]; do unzip -q "$z" -d /var/www/html/local/; done \
     && rm -rf /tmp/new-theme \
-    && chown -R www-data:www-data /var/www/html/theme/mb2nl /var/www/html/filter/mb2shortcodes
+    && chown -R www-data:www-data /var/www/html/theme/mb2nl /var/www/html/filter/mb2shortcodes /var/www/html/local
 
 
 
