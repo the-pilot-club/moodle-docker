@@ -38,3 +38,17 @@ You'll also need to configure some way of running Moodle's cron job, such as a c
 * `REDIS_PASSWORD` - The password to use when connecting to the Redis server. Defaults to an empty string.
 * `DATA_ROOT` - The path to the Moodle data directory. Defaults to an empty string.
 * `UPGRADE_KEY` - The upgrade key to use when upgrading Moodle. Defaults to null, thus disabling the feature.
+
+### Memory tuning
+
+Apache runs PHP in-process (prefork + mod_php), so every Apache worker is a full PHP process and the worker count is what
+drives the container's memory use. These variables are read when Apache starts, so they can be changed per deployment
+without rebuilding the image:
+
+* `APACHE_MAX_REQUEST_WORKERS` - Maximum simultaneous requests (worker processes). Defaults to `20`. Size it as roughly
+  `(container memory - 300MB) / 60MB`, e.g. `12` for 1GB, `28` for 2GB.
+* `APACHE_START_SERVERS` - Workers started at boot. Defaults to `2`.
+* `APACHE_MIN_SPARE_SERVERS` / `APACHE_MAX_SPARE_SERVERS` - Idle workers kept around; extras above the maximum are
+  shut down so memory is released after traffic spikes. Default to `2` / `5`.
+* `APACHE_MAX_CONNECTIONS_PER_CHILD` - Connections a worker serves before it is recycled, returning any memory it has
+  accumulated. Defaults to `1000`.
