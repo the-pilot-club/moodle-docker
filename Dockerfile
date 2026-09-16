@@ -17,7 +17,7 @@
 #    --classmap-authoritative \
 #    --ignore-platform-reqs
 
-FROM php:8.2-apache-bullseye AS php
+FROM php:8.2-apache-bookworm AS php
 
 ARG MOODLE_LMS_TAG=v4.5.10
 ARG MOODLE_AUTH_ENROLKEY_COMMIT=5648363
@@ -37,7 +37,7 @@ ARG MOODLE_LOCAL_TPC_COMMIT=9572bbd
 # Install PHP extensions
 RUN set -ex \
     && apt-get update \
-    && apt-get install --no-install-recommends -y git libfreetype6 libfreetype6-dev libjpeg62-turbo libjpeg62-turbo-dev libpng16-16 libpng-dev libwebp6 libwebp-dev libxml2-dev libxslt1.1 libxslt-dev libzip-dev unzip uuid-dev \
+    && apt-get install --no-install-recommends -y git libfreetype6 libfreetype6-dev libjpeg62-turbo libjpeg62-turbo-dev libpng16-16 libpng-dev libwebp7 libwebp-dev libxml2-dev libxslt1.1 libxslt-dev libzip-dev unzip uuid-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-configure zip --with-zip \
     && docker-php-ext-install -j$(nproc) exif gd intl mysqli opcache soap xsl zip \
@@ -100,6 +100,14 @@ RUN set -ex \
 # Configure PHP/Apache
 COPY php.ini /usr/local/etc/php/php.ini
 COPY moodle.conf /etc/apache2/sites-available/moodle.conf
+COPY mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+# Apache worker limits (see mpm_prefork.conf); override at runtime to match
+# the container's memory limit.
+ENV APACHE_START_SERVERS=2 \
+    APACHE_MIN_SPARE_SERVERS=2 \
+    APACHE_MAX_SPARE_SERVERS=5 \
+    APACHE_MAX_REQUEST_WORKERS=20 \
+    APACHE_MAX_CONNECTIONS_PER_CHILD=1000
 RUN set -ex \
     && a2disconf docker-php other-vhosts-access-log serve-cgi-bin \
     && a2dissite 000-default \
