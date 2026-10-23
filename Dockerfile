@@ -17,7 +17,7 @@
 #    --classmap-authoritative \
 #    --ignore-platform-reqs
 
-FROM php:8.2-apache-bookworm AS php
+FROM php:8.3-apache-bookworm AS php
 
 ARG MOODLE_LMS_TAG=v4.5.10
 ARG MOODLE_AUTH_ENROLKEY_COMMIT=5648363
