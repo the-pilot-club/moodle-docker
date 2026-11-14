@@ -154,7 +154,14 @@ $CFG->directorypermissions = 0777;
 
 $CFG->alternative_component_cache = __DIR__ . '/core_component.php';
 $CFG->upgradekey = getenv('UPGRADE_KEY') ?: null;
+// Installing plugins (or deploying updates) from the web UI is intentionally
+// disabled. The container filesystem is ephemeral on k8s: only moodledata is on
+// a persistent volume, and the web and cron containers each have their own copy
+// of the code, so a UI-installed plugin would vanish on the next pod restart and
+// be missing from the cron container. To add a plugin, commit its ZIP to
+// plugins/ (named <type>_<name>[-version].zip) and rebuild the image.
 $CFG->disableupdateautodeploy = true;
+$CFG->disableonclickaddoninstaller = true;
 $CFG->preventexecpath = true;
 $CFG->routerconfigured = true;
 

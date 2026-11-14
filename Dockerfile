@@ -95,6 +95,13 @@ RUN set -ex \
     && rm -rf /tmp/new-theme \
     && chown -R www-data:www-data /var/www/html/theme/mb2nl /var/www/html/filter/mb2shortcodes /var/www/html/local
 
+# Install any plugin ZIPs committed to ./plugins/ (named <type>_<name>[-version].zip,
+# e.g. local_foo.zip or mod_bar-1.2.3.zip). See install-plugins.sh for details.
+COPY install-plugins.sh /tmp/install-plugins.sh
+COPY plugins/ /tmp/plugins/
+RUN set -ex \
+    && sh /tmp/install-plugins.sh /tmp/plugins /var/www/html \
+    && rm -rf /tmp/plugins /tmp/install-plugins.sh
 
 
 # Configure PHP/Apache
